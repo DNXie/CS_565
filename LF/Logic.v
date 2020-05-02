@@ -155,7 +155,10 @@ Qed.
 Example and_exercise :
   forall n m : nat, n + m = 0 -> n = 0 /\ m = 0.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. split. 
+  - induction n. reflexivity. inversion H.
+  - induction m. reflexivity. rewrite plus_comm in H. inversion H.
+Qed.
 (** [] *)
 
 (** So much for proving conjunctive statements.  To go in the other
@@ -230,7 +233,8 @@ Proof.
 Lemma proj2 : forall P Q : Prop,
   P /\ Q -> Q.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros P Q [HP HQ]. assumption.
+Qed.
 (** [] *)
 
 (** Finally, we sometimes need to rearrange the order of conjunctions
@@ -257,7 +261,10 @@ Theorem and_assoc : forall P Q R : Prop,
   P /\ (Q /\ R) -> (P /\ Q) /\ R.
 Proof.
   intros P Q R [HP [HQ HR]].
-  (* FILL IN HERE *) Admitted.
+  split. 
+  - split; assumption.
+  - assumption.
+Qed.
 (** [] *)
 
 (** By the way, the infix notation [/\] is actually just syntactic
@@ -321,14 +328,22 @@ Qed.
 Lemma mult_eq_0 :
   forall n m, n * m = 0 -> n = 0 \/ m = 0.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. destruct n.
+  - left. reflexivity.
+  - destruct m.
+    + right. reflexivity.
+    + simpl in H. inversion H.
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, standard (or_commut)  *)
 Theorem or_commut : forall P Q : Prop,
   P \/ Q  -> Q \/ P.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. destruct H as [H|H].
+  - right. assumption.
+  - left. assumption.
+Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -386,7 +401,8 @@ Proof.
 Fact not_implies_our_not : forall (P:Prop),
   ~ P -> (forall (Q:Prop), P -> Q).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. exfalso. unfold not in H. apply H. assumption.
+Qed.
 (** [] *)
 
 (** Inequality is a frequent enough example of negated statement
@@ -456,14 +472,18 @@ Definition manual_grade_for_double_neg_inf : option (nat*string) := None.
 Theorem contrapositive : forall (P Q : Prop),
   (P -> Q) -> (~Q -> ~P).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold not. unfold not in H0. intro.
+  apply H in H1. apply H0 in H1. assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, standard (not_both_true_and_false)  *)
 Theorem not_both_true_and_false : forall P : Prop,
   ~ (P /\ ~P).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold not. intro. destruct H as [H1 H2]. apply H2 in H1.
+  assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, advanced (informal_not_PNP)  
@@ -574,19 +594,33 @@ Qed.
 Theorem iff_refl : forall P : Prop,
   P <-> P.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. split; intro; assumption.
+Qed.
 
 Theorem iff_trans : forall P Q R : Prop,
   (P <-> Q) -> (Q <-> R) -> (P <-> R).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. split. 
+  - intro. apply H in H1. apply H0 in H1. assumption.
+  - intro. apply H0 in H1. apply H in H1. assumption.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars, standard (or_distributes_over_and)  *)
 Theorem or_distributes_over_and : forall P Q R : Prop,
   P \/ (Q /\ R) <-> (P \/ Q) /\ (P \/ R).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. split. 
+  - intro. destruct H as [H1 |[H2 H3]].
+    + split; left; assumption.
+    + split; right; assumption.
+  - intro. destruct H as [[H1|H1] [H2|H2]].
+    + left. assumption.
+    + left. assumption.
+    + left. assumption.
+    + right. split; assumption.
+Qed.
 (** [] *)
 
 (** Some of Coq's tactics treat [iff] statements specially, avoiding
@@ -687,7 +721,9 @@ Proof.
 Theorem dist_not_exists : forall (X:Type) (P : X -> Prop),
   (forall x, P x) -> ~ (exists x, ~ P x).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold not. intros [x' H'].
+  apply H'. apply H.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard (dist_exists_or)  
@@ -698,7 +734,14 @@ Proof.
 Theorem dist_exists_or : forall (X:Type) (P Q : X -> Prop),
   (exists x, P x \/ Q x) <-> (exists x, P x) \/ (exists x, Q x).
 Proof.
-   (* FILL IN HERE *) Admitted.
+  intros. split.
+  - intros. destruct H as [x [H|H]].
+    + left. exists x. assumption.
+    + right. exists x. assumption.
+  - intros. destruct H as [[x H]|[x H]].
+    + exists x. left. assumption.
+    + exists x. right. assumption.
+Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -782,14 +825,42 @@ Lemma In_map_iff :
     In y (map f l) <->
     exists x, f x = y /\ In x l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  split. 
+  - intro. induction l; simpl.
+    + inversion H.
+    + simpl in H. destruct H as [H|H].
+      * subst. exists x. split. reflexivity. left. reflexivity.
+      * apply IHl in H. destruct H as [x' [H1 H2]].
+        exists x'. split. assumption. right. assumption.
+  - intro. induction l; simpl.
+    + destruct H as [x' [H1 contra]]. simpl in contra. assumption.
+    + destruct H as [x' [H1 H2]]. simpl in H2. destruct H2 as [H2|H2].
+      * subst. left. reflexivity.
+      * subst. right. apply IHl. exists x'. split. reflexivity. assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard (In_app_iff)  *)
 Lemma In_app_iff : forall A l l' (a:A),
   In a (l++l') <-> In a l \/ In a l'.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. split. 
+  - intro. induction l; simpl. 
+    + simpl in H. right. assumption.
+    + simpl in H. destruct H as [H|H].
+      * subst. left. left. reflexivity.
+      * apply IHl in H. destruct H as [H|H].
+        ** left. right. assumption.
+        ** right. assumption.
+  - intro. induction l; simpl.
+    + simpl in H. destruct H as [contra | H].
+      * exfalso. assumption.
+      * assumption.
+    + simpl in H. destruct H as [[H|H] | H].
+      * subst. left. reflexivity.
+      * right. apply IHl. left. assumption.
+      * right. apply IHl. right. assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, standard, recommended (All)  
@@ -1370,7 +1441,13 @@ Proof.
 Theorem eqb_neq : forall x y : nat,
   x =? y = false <-> x <> y.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. split.
+  - intro. unfold not. intro. subst. rewrite <- (eqb_refl y) in H.
+    discriminate H.
+  - intro. unfold not in H. destruct (x =? y) eqn:E.
+    + exfalso. apply H. apply eqb_true in E. assumption.
+    + reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, standard (eqb_list)  
