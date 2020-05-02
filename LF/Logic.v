@@ -1625,7 +1625,11 @@ Qed.
 Theorem excluded_middle_irrefutable: forall (P:Prop),
   ~ ~ (P \/ ~ P).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold not. intros. apply H. 
+  assert (H1: P -> False).
+  { intro. apply H. left. assumption. }
+  right. assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (not_exists_dist)  
