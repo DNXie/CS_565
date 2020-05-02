@@ -1,0 +1,7 @@
+DIGEST 388476442f4f864cef08fb3a3a3abe19
+Fhw7
+R70:80 Coq.Arith.Arith <> <> lib
+R107:117 Coq.Arith.EqNat <> <> lib
+R144:151 Coq.Init.Nat <> <> lib
+R178:188 Coq.omega.Omega <> <> lib
+R215:224 Coq.Lists.List <> <> lib
