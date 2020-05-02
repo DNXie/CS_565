@@ -515,11 +515,26 @@ Qed.
     in the proof of this one.  You may find that [plus_swap] comes in
     handy.) *)
 
+Lemma mult_n_Sm : forall n m : nat,
+  n * S m = n + n * m.
+Proof.
+  induction n; simpl.
+  - intros. reflexivity.
+  - intros. rewrite IHn. rewrite plus_assoc. rewrite plus_assoc.
+    assert (H: m + n = n + m). { intuition. }
+    rewrite H. reflexivity.
+Qed.
+
 Theorem mult_comm : forall m n : nat,
   m * n = n * m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction m; simpl. 
+  - intro. induction n. reflexivity. simpl. assumption.
+  - intro. rewrite IHm.  rewrite mult_n_Sm. reflexivity.
+Qed.
 (** [] *)
+
+
 
 (** **** Exercise: 3 stars, standard, optional (more_exercises)  
 
@@ -614,7 +629,10 @@ Qed.
 Theorem eqb_refl : forall n : nat,
   true = (n =? n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction n; simpl.
+  - reflexivity.
+  - assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (plus_swap')  
