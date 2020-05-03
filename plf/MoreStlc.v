@@ -2006,14 +2006,33 @@ Inductive appears_free_in : string -> tm -> Prop :=
      appears_free_in x (tlcase t1 t2 y1 y2 t3)
 
   (* Add rules for the following extensions. *)
-
+  (* FILL IN HERE *)
   (* pairs *)
-  (* FILL IN HERE *)
+  | afi_pair1 : forall x t1 t2,
+      appears_free_in x t1 ->
+      appears_free_in x (pair t1 t2)
+  | afi_pair2 : forall x t1 t2,
+      appears_free_in x t2 ->
+      appears_free_in x (pair t1 t2)
+  | afi_fst : forall x t,
+      appears_free_in x t ->
+      appears_free_in x (fst t)
+  | afi_snd : forall x t,
+      appears_free_in x t ->
+      appears_free_in x (snd t)
   (* let *)
-  (* FILL IN HERE *)
+  | afi_let1 : forall x t1 t2 y,
+      appears_free_in x t1 ->
+      appears_free_in x (tlet y t1 t2)
+  | afi_let2 : forall x t1 t2 y,
+      appears_free_in x t2 -> 
+      x <> y ->
+      appears_free_in x (tlet y t1 t2)
   (* fix *)
-  (* FILL IN HERE *)
-.
+  | afi_fix : forall x t, 
+      appears_free_in x t ->
+      appears_free_in x (tfix t).
+  
 
 Hint Constructors appears_free_in.
 
