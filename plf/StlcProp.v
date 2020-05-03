@@ -653,18 +653,22 @@ Corollary soundness : forall t t' T,
   t -->* t' ->
   ~(stuck t').
 Proof.
-  intros. unfold not. intros. unfold stuck in H1.
-  destruct H1 as [H1 H2]. unfold not in H2. apply H2.
-  
-
-
-
-
-
-  intros t t' T Hhas_type Hmulti. unfold stuck.
-  intros [Hnf Hnot_val]. unfold normal_form in Hnf.
+  intros t t' T Hhas_type Hmulti.
+  unfold stuck, not. intros [Hnf Hnot_val].
+  unfold normal_form in Hnf.
   induction Hmulti.
-  (* FILL IN HERE *) Admitted.
+  - (* x0 cannot step. progress works *)
+    apply progress in Hhas_type. 
+    destruct Hhas_type as [Hhas_type|Hhas_type].
+    * apply Hnot_val. assumption.
+    * apply Hnf. assumption.
+  - (* x0 can step, preservation works *)
+    apply IHHmulti. 
+    * apply preservation with (t:=x0); assumption.
+    * assumption.
+    * assumption.
+Qed.
+
 (** [] *)
 
 (* ################################################################# *)
