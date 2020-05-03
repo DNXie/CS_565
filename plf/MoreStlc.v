@@ -957,6 +957,7 @@ Inductive tm : Type :=
   | tnil : ty -> tm
   | tcons : tm -> tm -> tm
   | tlcase : tm -> tm -> string -> string -> tm -> tm
+           (* t1   t2       x       y         t3   *)
            (* i.e., [lcase t1 of | nil => t2 | x::y => t3] *)
   (* unit *)
   | unit : tm
@@ -1276,12 +1277,12 @@ Inductive has_type : context -> tm -> ty -> Prop :=
       Gamma |- t1 \in T1 ->
       Gamma |- t2 \in T2 ->
       Gamma |- (pair t1 t2) \in (Prod T1 T2)
-  | T_Fst : forall Gamma t1 T1 t2 T2,
-      Gamma |- (pair t1 t2) \in (Prod T1 T2) ->
-      Gamma |- (fst (pair t1 t2)) \in T1
-  | T_Snd : forall Gamma t1 T1 t2 T2,
-      Gamma |- (pair t1 t2) \in (Prod T1 T2) ->
-      Gamma |- (snd (pair t1 t2)) \in T2
+  | T_Fst : forall Gamma t T1 T2,
+      Gamma |- t \in (Prod T1 T2) ->
+      Gamma |- (fst t) \in T1
+  | T_Snd : forall Gamma t T1 T2,
+      Gamma |- t \in (Prod T1 T2) ->
+      Gamma |- (snd t) \in T2
   (* let *)
   | T_Let : forall Gamma x t1 T1 t2 T2,
       Gamma |- t1 \in T1 ->
@@ -1393,15 +1394,15 @@ Proof.
      to increase the max search depth of [auto] from the
      default 5 to 10. *)
   auto 10.
-(* FILL IN HERE *) Admitted.
+Qed.
 
 Example numtest_reduces :
   test -->* const 5.
 Proof.
-(* 
+
   unfold test. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+Qed.
 
 End Numtest.
 
@@ -1418,20 +1419,21 @@ Definition test :=
         (pair
           (const 5)
           (const 6))
-        (const 7))).
+        (const 7))). 
+
 
 Example typechecks :
   empty |- test \in Nat.
-Proof. unfold test. eauto 15. (* FILL IN HERE *) Admitted.
+Proof. unfold test. eauto 15. (* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: typechecks *)
 
 Example reduces :
   test -->* const 6.
 Proof.
-(* 
+
   unfold test. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: reduces *)
 
 End Prodtest.
@@ -1450,16 +1452,16 @@ Definition test :=
 
 Example typechecks :
   empty |- test \in Nat.
-Proof. unfold test. eauto 15. (* FILL IN HERE *) Admitted.
+Proof. unfold test. eauto 15. (* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: typechecks *)
 
 Example reduces :
   test -->* const 6.
 Proof.
-(* 
+
   unfold test. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: reduces *)
 
 End LetTest.
@@ -1480,15 +1482,15 @@ Definition test :=
 
 Example typechecks :
   empty |- test \in Nat.
-Proof. unfold test. eauto 15. (* FILL IN HERE *) Admitted.
+Proof. unfold test. eauto 15. (* FILL IN HERE *) Qed.
 
 Example reduces :
   test -->* (const 5).
 Proof.
-(* 
+ 
   unfold test. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 
 End Sumtest1.
 
@@ -1514,15 +1516,15 @@ Definition test :=
 
 Example typechecks :
   empty |- test \in (Prod Nat Nat).
-Proof. unfold test. eauto 15. (* FILL IN HERE *) Admitted.
+Proof. unfold test. eauto 15. (* FILL IN HERE *) Qed.
 
 Example reduces :
   test -->* (pair (const 5) (const 0)).
 Proof.
-(* 
+ 
   unfold test. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 
 End Sumtest2.
 
@@ -1545,15 +1547,15 @@ Definition test :=
 
 Example typechecks :
   empty |- test \in Nat.
-Proof. unfold test. eauto 20. (* FILL IN HERE *) Admitted.
+Proof. unfold test. eauto 20. (* FILL IN HERE *) Qed.
 
 Example reduces :
   test -->* (const 25).
 Proof.
-(* 
+ 
   unfold test. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 
 End ListTest.
 
@@ -1582,16 +1584,16 @@ Definition fact :=
 
 Example typechecks :
   empty |- fact \in (Arrow Nat Nat).
-Proof. unfold fact. auto 10. (* FILL IN HERE *) Admitted.
+Proof. unfold fact. auto 10. (* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: typechecks *)
 
 Example reduces :
   (app fact (const 4)) -->* (const 24).
 Proof.
-(* 
+ 
   unfold fact. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: reduces *)
 
 End FixTest1.
@@ -1621,7 +1623,7 @@ Example typechecks :
     (Arrow (Arrow Nat Nat)
       (Arrow (List Nat)
         (List Nat))).
-Proof. unfold map. auto 10. (* FILL IN HERE *) Admitted.
+Proof. unfold map. auto 10. (* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: typechecks *)
 
 Example reduces :
@@ -1629,10 +1631,10 @@ Example reduces :
          (tcons (const 1) (tcons (const 2) (tnil Nat)))
   -->* (tcons (const 2) (tcons (const 3) (tnil Nat))).
 Proof.
-(* 
+ 
   unfold map. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: reduces *)
 
 End FixTest2.
@@ -1662,25 +1664,25 @@ Definition equal :=
 
 Example typechecks :
   empty |- equal \in (Arrow Nat (Arrow Nat Nat)).
-Proof. unfold equal. auto 10. (* FILL IN HERE *) Admitted.
+Proof. unfold equal. auto 10. (* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: typechecks *)
 
 Example reduces :
   (app (app equal (const 4)) (const 4)) -->* (const 1).
 Proof.
-(* 
+ 
   unfold equal. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: reduces *)
 
 Example reduces2 :
   (app (app equal (const 4)) (const 5)) -->* (const 0).
 Proof.
-(* 
+ 
   unfold equal. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 
 End FixTest3.
 
@@ -1718,16 +1720,16 @@ Definition eotest :=
 
 Example typechecks :
   empty |- eotest \in (Prod Nat Nat).
-Proof. unfold eotest. eauto 30. (* FILL IN HERE *) Admitted.
+Proof. unfold eotest. eauto 30. (* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: typechecks *)
 
 Example reduces :
   eotest -->* (pair (const 0) (const 1)).
 Proof.
-(* 
+ 
   unfold eotest. normalize.
-*)
-(* FILL IN HERE *) Admitted.
+
+(* FILL IN HERE *) Qed.
 (* GRADE_THEOREM 0.25: reduces *)
 
 End FixTest4.
