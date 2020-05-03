@@ -1459,14 +1459,21 @@ Qed.
     definition is correct, prove the lemma [eqb_list_true_iff]. *)
 
 Fixpoint eqb_list {A : Type} (eqb : A -> A -> bool)
-                  (l1 l2 : list A) : bool
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+                  (l1 l2 : list A) : bool :=
+  match l1, l2 with
+  | [], [] => true
+  | hd1::tl1, hd2::tl2 => (eqb hd1 hd2) && (eqb_list eqb tl1 tl2)
+  | _, _ => false
+  end.
 
 Lemma eqb_list_true_iff :
   forall A (eqb : A -> A -> bool),
     (forall a1 a2, eqb a1 a2 = true <-> a1 = a2) ->
     forall l1 l2, eqb_list eqb l1 l2 = true <-> l1 = l2.
 Proof.
+  split.
+  - generalize dependent l2. 
+      
 (* FILL IN HERE *) Admitted.
 (** [] *)
 
