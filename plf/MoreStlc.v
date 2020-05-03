@@ -2067,8 +2067,11 @@ Proof with eauto 30.
     destruct (eqb_stringP x2 y)...
 
   (* Complete the proof. *)
+  - eapply T_Let... apply IHhas_type2... intros y Hafi.
+    unfold update, t_update.
+    destruct (eqb_stringP x y)...
 
-  (* FILL IN HERE *) Admitted.
+  (* FILL IN HERE *) Qed.
 
 Lemma free_in_context : forall x t T Gamma,
    appears_free_in x t ->
