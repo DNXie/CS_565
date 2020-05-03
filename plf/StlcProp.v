@@ -684,7 +684,18 @@ Theorem unique_types : forall Gamma e T T',
   Gamma |- e \in T' ->
   T = T'.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. generalize dependent T'. induction H; intros. 
+  + inversion H0. subst. rewrite H in H3. injection H3 as H3. 
+    assumption.
+  + inversion H0. subst. apply IHhas_type in H6. subst. 
+    reflexivity.
+  + inversion H1. subst. apply IHhas_type1 in H5.
+    injection H5. intros. subst. reflexivity.
+  + inversion H0. reflexivity.
+  + inversion H0. reflexivity.
+  + inversion H2. subst. apply IHhas_type2 in H9.  assumption.
+Qed.
+
 (** [] *)
 
 (* ################################################################# *)
