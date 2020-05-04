@@ -1068,7 +1068,17 @@ Theorem is_wp_example :
   is_wp (fun st => st Y <= 4)
     (X ::= Y + 1) (fun st => st X <= 5).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold is_wp. split. 
+  - eapply hoare_consequence_pre.
+    apply hoare_asgn. intros st H. unfold assn_sub.
+    unfold t_update. simpl. omega. 
+  - intros. unfold hoare_triple in H.
+    unfold assert_implies. intros.
+    assert (H1: t_update st X ((st Y) + 1 ) X <= 5).
+    { eapply H. constructor. unfold aeval. reflexivity.
+      assumption. }
+    unfold t_update in H1. simpl in H1. omega.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced, optional (hoare_asgn_weakest)  
