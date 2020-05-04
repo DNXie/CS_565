@@ -41,7 +41,7 @@ HASNATDYNLINK     := $(COQMF_HASNATDYNLINK)
 OCAMLWARN         := $(COQMF_WARN)
 
 makefile.conf: 
-	coq_makefile -o makefile Bib.v BibTest.v Equiv.v EquivTest.v Hoare.v Hoare2.v Hoare2Test.v HoareAsLogic.v HoareAsLogicTest.v HoareTest.v Imp.v ImpTest.v LibTactics.v LibTacticsTest.v Maps.v MapsTest.v MoreStlc.v MoreStlcTest.v Norm.v NormTest.v PE.v PETest.v Postscript.v PostscriptTest.v Preface.v PrefaceTest.v RecordSub.v RecordSubTest.v Records.v RecordsTest.v References.v ReferencesTest.v Smallstep.v SmallstepTest.v Stlc.v StlcProp.v StlcPropTest.v StlcTest.v Sub.v SubTest.v Typechecking.v TypecheckingTest.v Types.v TypesTest.v UseAuto.v UseAutoTest.v UseTactics.v UseTacticsTest.v hw5.v hw7.v
+	coq_makefile -o makefile Bib.v BibTest.v Equiv.v EquivTest.v Hoare.v Hoare2.v Hoare2Test.v HoareAsLogic.v HoareAsLogicTest.v HoareTest.v Imp.v ImpTest.v LibTactics.v LibTacticsTest.v Maps.v MapsTest.v MoreStlc.v MoreStlcTest.v Norm.v NormTest.v PE.v PETest.v Postscript.v PostscriptTest.v Preface.v PrefaceTest.v RecordSub.v RecordSubTest.v Records.v RecordsTest.v References.v ReferencesTest.v Smallstep.v SmallstepTest.v Stlc.v StlcProp.v StlcPropTest.v StlcTest.v Sub.v SubTest.v Typechecking.v TypecheckingTest.v Types.v TypesTest.v UseAuto.v UseAutoTest.v UseTactics.v UseTacticsTest.v final.v hw5.v hw7.v
 
 # This file can be created by the user to hook into double colon rules or
 # add any other Makefile code he may need
