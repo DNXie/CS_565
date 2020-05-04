@@ -238,12 +238,12 @@ Corollary soundness : forall t t' T,
   ~(stuck t').
 Proof.
   intros. unfold stuck, not. intros. 
-  destruct H1 as [Hnf Hnot_val].
-  unfold normal_form in Hnf.
+  destruct H1 as [H2 H3].
+  unfold normal_form in H2.
   induction H0.
   - apply progress in H. destruct H as [H|H].
-    * apply Hnot_val. assumption.
-    * apply Hnf. assumption.
+    * apply H3. assumption.
+    * apply H2. assumption.
   - apply IHmulti.
     * apply preservation with (t:=x0); assumption.
     * assumption.
