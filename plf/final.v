@@ -274,7 +274,7 @@ Definition factorial_body : tm :=
     )
   ).
 
-
+(* allocate a Ref to store f. Initially stores a dummy function *)
 (* \s:Nat. 
   apply \f:Ref(Nat->Nat).
     f := factorial_body
