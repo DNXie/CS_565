@@ -261,18 +261,67 @@ Import References.STLCRef.RefsAndNontermination.
 (* Question 10 (15 points) *)
 (* Write a definition of factorial using references and without using fix *)
 
-Definition factorial : tm
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+(* store factorial_body in reference f. call itself *)
+(* \x:Nat. if test0 x then 1 else x * ((!f) (pred x)) *)
+Definition f := "f".
+Definition factorial_body : tm :=
+  (abs x Nat 
+    (test0 (var x)
+      (const 1)
+      (mlt (var x)
+        (app (deref (var f)) (prd (var x)))
+      )
+    )
+  ).
+
+(* \s:Nat. 
+  apply \f:Ref(Nat->Nat).
+    f := factorial_body; 
+    (!f s) 
+  in
+    ref (\x:Nat. 0)
+*)
+
+(* \s:Nat. 
+  apply \f:Ref(Nat->Nat).
+    f := factorial_body
+    (!f s) 
+  in
+    ref (\x:Nat. 0)  [dummy]
+*)
+Definition factorial : tm :=
+  (abs s Nat
+    (app 
+      (abs f (Ref (Arrow Nat Nat))
+        (tseq (assign (var f) factorial_body)
+              (app (deref (var f)) (var s))
+        )
+      )
+     (ref (abs x Nat (const 0)))
+    )
+  ).
 
 Lemma factorial_4 : exists st,
   app factorial (const 4) / nil -->* const 24 / st.
 Proof.  Admitted.
  
 (* Question 11 (10 points) *)
-
 Lemma factorial_type : empty; nil |- factorial \in (Arrow Nat Nat).
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof with eauto.
+  unfold factorial. unfold factorial_body.
+  eapply T_Abs...
+  eapply T_App...
+  eapply T_Abs...
+  unfold tseq.
+  eapply T_App...
+  eapply T_Abs...
+  eapply T_Assign...
+  eapply T_Abs...
+  eapply T_If0...
+  eapply T_Mult...
+  eapply T_App...
+Qed.
+
 
 End Refs_Ex.
 
