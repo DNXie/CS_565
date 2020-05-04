@@ -274,13 +274,6 @@ Definition factorial_body : tm :=
     )
   ).
 
-(* \s:Nat. 
-  apply \f:Ref(Nat->Nat).
-    f := factorial_body; 
-    (!f s) 
-  in
-    ref (\x:Nat. 0)
-*)
 
 (* \s:Nat. 
   apply \f:Ref(Nat->Nat).
@@ -303,7 +296,9 @@ Definition factorial : tm :=
 
 Lemma factorial_4 : exists st,
   app factorial (const 4) / nil -->* const 24 / st.
-Proof.  Admitted.
+Proof.
+  eexists. unfold factorial. reduce.  
+Qed.
  
 (* Question 11 (10 points) *)
 Lemma factorial_type : empty; nil |- factorial \in (Arrow Nat Nat).
