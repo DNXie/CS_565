@@ -94,6 +94,8 @@ UseTactics.vo UseTactics.glob UseTactics.v.beautified: UseTactics.v
 UseTactics.vio: UseTactics.v
 UseTacticsTest.vo UseTacticsTest.glob UseTacticsTest.v.beautified: UseTacticsTest.v
 UseTacticsTest.vio: UseTacticsTest.v
+final.vo final.glob final.v.beautified: final.v
+final.vio: final.v
 hw5.vo hw5.glob hw5.v.beautified: hw5.v
 hw5.vio: hw5.v
 hw7.vo hw7.glob hw7.v.beautified: hw7.v
