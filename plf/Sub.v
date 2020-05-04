@@ -1030,7 +1030,18 @@ Proof with eauto.
   intros U V1 V2 Hs.
   remember (Arrow V1 V2) as V.
   generalize dependent V2. generalize dependent V1.
-  (* FILL IN HERE *) Admitted.
+  (* FILL IN HERE *) 
+  induction Hs; subst; try solve_by_invert.
+  - intros. exists V1. exists V2. split. 
+    + assumption.
+    + split...
+  - intros. apply IHHs2 in HeqV. destruct HeqV as [U1 [U2 [H1 [H2 H3]]]].
+    apply IHHs1 in H1. destruct H1 as [U3 [U4 [H4 [H5 H6]]]].
+    exists U3. exists U4. split...
+  - intros. discriminate HeqV.
+  - intros. injection HeqV. intros. subst. exists S1, S2.
+    split...
+Qed.
 (** [] *)
 
 (* ================================================================= *)
