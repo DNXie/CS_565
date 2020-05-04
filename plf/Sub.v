@@ -1012,7 +1012,13 @@ Lemma sub_inversion_Bool : forall U,
 Proof with auto.
   intros U Hs.
   remember Bool as V.
-  (* FILL IN HERE *) Admitted.
+  (* FILL IN HERE *) 
+  induction Hs; subst.
+  - reflexivity.
+  - destruct IHHs2. reflexivity. apply IHHs1. reflexivity.
+  - discriminate HeqV.
+  - discriminate HeqV.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, standard (sub_inversion_arrow)  *)
