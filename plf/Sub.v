@@ -878,7 +878,10 @@ Example subtyping_example_1 :
   (Arrow Top Student) <: (Arrow (Arrow C C) Person).
   (* Top->Student <: (C->C)->Person *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  eapply S_Arrow.
+  apply S_Top.
+  apply sub_student_person.
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, standard, optional (subtyping_example_2)  *)
@@ -886,7 +889,8 @@ Example subtyping_example_2 :
   (Arrow Top Person) <: (Arrow Person Top).
   (* Top->Person <: Person->Top *)
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  apply S_Arrow; apply S_Top.
+  (* FILL IN HERE *) Qed.
 (** [] *)
 
 End Examples.
