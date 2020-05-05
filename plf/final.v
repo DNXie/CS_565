@@ -280,7 +280,7 @@ Definition factorial_body : tm :=
     f := factorial_body
     (!f s) 
   in
-    ref (\x:Nat. 0)  [dummy]
+    ref (\x:Nat. 1)  [dummy]
 *)
 Definition factorial : tm :=
   (abs s Nat
@@ -290,7 +290,7 @@ Definition factorial : tm :=
               (app (deref (var f)) (var s))
         )
       )
-     (ref (abs x Nat (const 0)))
+     (ref (abs x Nat (const 1)))
     )
   ).
 
