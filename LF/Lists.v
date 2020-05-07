@@ -923,7 +923,8 @@ Qed.
 Theorem count_member_nonzero : forall (s : bag),
   1 <=? (count 1 (1 :: s)) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. simpl. reflexivity.
+Qed.
 (** [] *)
 
 (** The following lemma about [leb] might help you in the next exercise. *)
