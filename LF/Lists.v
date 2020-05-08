@@ -944,7 +944,12 @@ Proof.
 Theorem remove_does_not_increase_count: forall (s : bag),
   (count 0 (remove_one 0 s)) <=? (count 0 s) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction s. 
+  - simpl. reflexivity.
+  - simpl. destruct (n =? 0) eqn:E.
+    + apply leb_n_Sn.
+    + simpl.  rewrite E. assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, standard, optional (bag_count_sum)  
@@ -1056,17 +1061,20 @@ Definition option_elim (d : nat) (o : natoption) : nat :=
     Using the same idea, fix the [hd] function from earlier so we don't
     have to pass a default element for the [nil] case.  *)
 
-Definition hd_error (l : natlist) : natoption
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Definition hd_error (l : natlist) : natoption :=
+  match l with
+  | [] => None
+  | x::_ => Some x
+  end.
 
 Example test_hd_error1 : hd_error [] = None.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Example test_hd_error2 : hd_error [1] = Some 1.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Example test_hd_error3 : hd_error [5;6] = Some 5.
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, standard, optional (option_elim_hd)  
@@ -1076,7 +1084,10 @@ Example test_hd_error3 : hd_error [5;6] = Some 5.
 Theorem option_elim_hd : forall (l:natlist) (default:nat),
   hd default l = option_elim default (hd_error l).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. destruct l.
+  - simpl. reflexivity.
+  - simpl. reflexivity.
+Qed.
 (** [] *)
 
 End NatList.
@@ -1110,7 +1121,8 @@ Definition eqb_id (x1 x2 : id) :=
 (** **** Exercise: 1 star, standard (eqb_id_refl)  *)
 Theorem eqb_id_refl : forall x, true = eqb_id x x.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. destruct x. simpl. apply eqb_refl.
+Qed.
 (** [] *)
 
 (** Now we define the type of partial maps: *)
@@ -1156,7 +1168,9 @@ Theorem update_eq :
   forall (d : partial_map) (x : id) (v: nat),
     find x (update d x v) = Some v.
 Proof.
- (* FILL IN HERE *) Admitted.
+  intros. unfold update. simpl. rewrite <- eqb_id_refl.
+  reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, standard (update_neq)  *)
@@ -1164,7 +1178,8 @@ Theorem update_neq :
   forall (d : partial_map) (x y : id) (o: nat),
     eqb_id x y = false -> find x (update d y o) = find x d.
 Proof.
- (* FILL IN HERE *) Admitted.
+  intros. unfold update. simpl. rewrite H. reflexivity.
+Qed.
 (** [] *)
 End PartialMap.
 
