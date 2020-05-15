@@ -1536,8 +1536,21 @@ Lemma eqb_list_true_iff :
 Proof.
   split.
   - generalize dependent l2. 
-      
-(* FILL IN HERE *) Admitted.
+    induction l1. 
+    + intros. destruct l2. reflexivity. inversion H0.
+    + intros. destruct l2. inversion H0. simpl in H0. 
+      assert (H1: eqb x x0 = true).
+      { rewrite andb_commutative in H0.
+        apply andb_true_elim2 in H0. assumption. }
+      assert (H2: eqb_list eqb l1 l2 = true).
+      { apply andb_true_elim2 in H0. assumption. }
+      apply H in H1. subst. apply IHl1 in H2. subst. reflexivity.
+  - generalize dependent l2. induction l1. 
+    + intros. subst. reflexivity.
+    + intros. subst. simpl. apply andb_true_iff. split. 
+      * apply H. reflexivity. 
+      * apply IHl1. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, recommended (All_forallb)  
