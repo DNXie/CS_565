@@ -1570,7 +1570,18 @@ Fixpoint forallb {X : Type} (test : X -> bool) (l : list X) : bool :=
 Theorem forallb_true_iff : forall X test (l : list X),
    forallb test l = true <-> All (fun x => test x = true) l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  split.
+  - intros. induction l. 
+    + simpl. reflexivity.
+    + simpl. simpl in H.  split. 
+      * rewrite andb_commutative in H. apply andb_true_elim2 in H.
+        assumption. 
+      * apply IHl. apply andb_true_elim2 in H. assumption.
+  - intros. induction l.
+    + simpl. reflexivity.
+    + simpl. simpl in H. destruct H as [H1 H2]. apply IHl in H2.
+      apply andb_true_iff; split; assumption.
+Qed.
 
 (** Are there any important properties of the function [forallb] which
     are not captured by this specification? *)
