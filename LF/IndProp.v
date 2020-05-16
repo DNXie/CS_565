@@ -666,7 +666,14 @@ Qed.
 Theorem Sn_le_Sm__n_le_m : forall n m,
   S n <= S m -> n <= m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. inversion H. 
+  - subst. apply le_n.
+  - subst. inversion H1. 
+    + subst. apply le_S. apply le_n.
+    + subst. assert (H': n <= S n).
+      { apply le_S. apply le_n. }
+      apply le_trans with (n := (S n)); assumption.
+Qed.
 
 Theorem le_plus_l : forall a b,
   a <= a + b.
