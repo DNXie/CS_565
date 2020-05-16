@@ -502,7 +502,10 @@ Qed.
 Theorem ev_ev__ev : forall n m,
   even (n+m) -> even n -> even m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction H0.
+  - simpl in H. assumption.
+  - apply IHeven. simpl in H. inversion H. assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, standard, optional (ev_plus_plus)  
@@ -514,7 +517,13 @@ Proof.
 Theorem ev_plus_plus : forall n m p,
   even (n+m) -> even (n+p) -> even (m+p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. apply ev_sum with (n + m) (n + p) in H.
+  rewrite plus_swap in H. rewrite <- plus_assoc in H. 
+  rewrite plus_assoc with n n (m+p) in H. 
+  apply ev_ev__ev with (n:= n+n) (m:=m+p) in H. apply H.
+  rewrite <- double_plus. apply ev_double.
+  apply H0.
+Qed.
 (** [] *)
 
 (* ################################################################# *)
