@@ -650,12 +650,18 @@ Proof.
 Theorem O_le_n : forall n,
   0 <= n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction n. 
+  - apply le_n.
+  - apply le_S.  assumption.
+Qed.
 
 Theorem n_le_m__Sn_le_Sm : forall n m,
   n <= m -> S n <= S m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction H. 
+  - apply le_n.
+  - simpl. apply le_S.  assumption.
+Qed.
 
 Theorem Sn_le_Sm__n_le_m : forall n m,
   S n <= S m -> n <= m.
@@ -665,7 +671,12 @@ Proof.
 Theorem le_plus_l : forall a b,
   a <= a + b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction b.
+  - rewrite plus_comm. simpl. apply le_n.
+  - assert (H : a + S b = S (a + b)).
+    { rewrite plus_n_Sm. reflexivity. }
+    rewrite H. apply le_S.  assumption.
+Qed.
 
 Theorem plus_lt : forall n1 n2 m,
   n1 + n2 < m ->
