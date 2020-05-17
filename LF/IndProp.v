@@ -709,12 +709,17 @@ Proof.
   - assumption.
   - apply le_S. apply le_n.
 Qed.
-  (* FILL IN HERE *) Admitted.
 
 Theorem leb_complete : forall n m,
   n <=? m = true -> n <= m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction n.
+  - intros. apply O_le_n.
+  - induction m. 
+    + intros. discriminate H. 
+    + intros. simpl in H. apply IHn in H. 
+      apply n_le_m__Sn_le_Sm. assumption.
+Qed.
 
 (** Hint: The next one may be easiest to prove by induction on [m]. *)
 
@@ -722,7 +727,13 @@ Theorem leb_correct : forall n m,
   n <= m ->
   n <=? m = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction n. 
+  - intros. simpl. reflexivity.
+  - induction m.
+    + intros. inversion H.
+    + intros. simpl. apply IHn. apply Sn_le_Sm__n_le_m in H.
+      assumption.
+Qed.
 
 (** Hint: This one can easily be proved without using [induction]. *)
 
