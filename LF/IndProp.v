@@ -749,7 +749,8 @@ Qed.
 Theorem leb_iff : forall n m,
   n <=? m = true <-> n <= m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  split. apply leb_complete. apply leb_correct. 
+Qed.
 (** [] *)
 
 Module R.
