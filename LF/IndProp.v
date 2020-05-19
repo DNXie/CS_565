@@ -740,7 +740,9 @@ Qed.
 Theorem leb_true_trans : forall n m o,
   n <=? m = true -> m <=? o = true -> n <=? o = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. apply leb_complete in H. apply leb_complete in H0.
+  apply leb_correct. apply le_trans with (n:=m); assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (leb_iff)  *)
