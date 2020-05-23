@@ -719,11 +719,6 @@ Qed.
 
     Prove this by induction on [l]. *)
 
-Lemma S_pred_n : forall n, S (Nat.pred n) = n.
-Proof.
-  intros. induction n. 
-Admitted.
-
 Theorem nth_error_after_last: forall (n : nat) (X : Type) (l : list X),
      length l = n ->
      nth_error l n = None.
@@ -922,6 +917,7 @@ Theorem combine_split : forall X Y (l : list (X * Y)) l1 l2,
   split l = (l1, l2) ->
   combine l1 l2 = l.
 Proof.
+  
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
@@ -998,7 +994,14 @@ Theorem bool_fn_applied_thrice :
   forall (f : bool -> bool) (b : bool),
   f (f (f b)) = f b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. destruct b.
+  - destruct (f true) eqn:E.
+    + repeat rewrite E. reflexivity.
+    + destruct (f false) eqn:E'; assumption.
+  - destruct (f false) eqn:E.
+    + destruct (f true) eqn:E'; assumption.
+    + repeat rewrite E. reflexivity.
+Qed.
 (** [] *)
 
 (* ################################################################# *)
@@ -1074,7 +1077,12 @@ Proof.
 Theorem eqb_sym : forall (n m : nat),
   (n =? m) = (m =? n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction n. 
+  - intros. destruct m; reflexivity. 
+  - intros. destruct m. 
+    * reflexivity. 
+    * simpl. apply IHn. 
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced, optional (eqb_sym_informal)  
@@ -1095,7 +1103,10 @@ Theorem eqb_trans : forall n m p,
   m =? p = true ->
   n =? p = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. apply eqb_true in H. 
+  apply eqb_true in H0. subst. rewrite <- eqb_refl. 
+  reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (split_combine)  
